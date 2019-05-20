@@ -2,6 +2,7 @@ package person
 
 import (
 	"context"
+	"time"
 
 	"cloud.google.com/go/firestore"
 	"github.com/emmaly/leafbridge"
@@ -12,12 +13,18 @@ import (
 
 // Person is a person
 type Person struct {
-	ID            id.Person
-	Name          Name
-	Contacts      []contact.Contact `firestore:",omitempty"`
-	Notes         []note.Note       `firestore:",omitempty"`
-	Supervisor    id.Person         `firestore:",omitempty"`
-	DirectReports []id.Person       `firestore:",omitempty"`
+	ID              id.Person
+	Name            Name
+	Created         time.Time         `firestore:",omitempty"`
+	CreatedBy       id.Person         `firestore:",omitempty"`
+	Modified        time.Time         `firestore:",omitempty"`
+	ModifiedBy      id.Person         `firestore:",omitempty"`
+	Notes           []note.Note       `firestore:",omitempty"`
+	Title           string            `firestore:",omitempty"`
+	Contacts        []contact.Contact `firestore:",omitempty"`
+	Supervisor      id.Person         `firestore:",omitempty"`
+	DirectReports   []id.Person       `firestore:",omitempty"`
+	PrimaryLocation id.Location       `firestore:",omitempty"`
 }
 
 // LoadPerson fetches a Person from the DB by ID

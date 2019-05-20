@@ -48,3 +48,13 @@ type Computer string
 func NewComputer() Computer {
 	return Computer(New())
 }
+
+//
+//
+// Location is an ID for a location
+type Location string
+
+// NewLocation returns a new Location
+func NewLocation() Location {
+	return Location(New())
+}

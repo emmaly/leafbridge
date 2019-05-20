@@ -2,6 +2,7 @@ package contact
 
 import (
 	"context"
+	"time"
 
 	"cloud.google.com/go/firestore"
 	"github.com/emmaly/leafbridge"
@@ -14,6 +15,10 @@ type Contact struct {
 	ID           id.Contact
 	Type         Type        `firestore:",omitempty"`
 	Context      Context     `firestore:",omitempty"`
+	Created      time.Time   `firestore:",omitempty"`
+	CreatedBy    id.Person   `firestore:",omitempty"`
+	Modified     time.Time   `firestore:",omitempty"`
+	ModifiedBy   id.Person   `firestore:",omitempty"`
 	Notes        []note.Note `firestore:",omitempty"`
 	EmailAddress string      `firestore:",omitempty"`
 	Number       string      `firestore:",omitempty"`

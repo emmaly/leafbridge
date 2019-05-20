@@ -1,17 +1,23 @@
 package contact
 
 import (
+	"time"
+
 	"github.com/emmaly/leafbridge/id"
 	"github.com/emmaly/leafbridge/note"
 )
 
 // Username is a username type of Contact
 type Username struct {
-	ID       id.Contact
-	Type     Type        `firestore:",omitempty"`
-	Context  Context     `firestore:",omitempty"`
-	Notes    []note.Note `firestore:",omitempty"`
-	Username string      `firestore:",omitempty"`
+	ID         id.Contact
+	Type       Type        `firestore:",omitempty"`
+	Context    Context     `firestore:",omitempty"`
+	Created    time.Time   `firestore:",omitempty"`
+	CreatedBy  id.Person   `firestore:",omitempty"`
+	Modified   time.Time   `firestore:",omitempty"`
+	ModifiedBy id.Person   `firestore:",omitempty"`
+	Notes      []note.Note `firestore:",omitempty"`
+	Username   string      `firestore:",omitempty"`
 }
 
 // AsUsername converts a Contact to an Username

@@ -9,6 +9,7 @@ import (
 	firebase "firebase.google.com/go"
 	"github.com/emmaly/leafbridge/contact"
 	"github.com/emmaly/leafbridge/id"
+	"github.com/emmaly/leafbridge/location"
 	"github.com/emmaly/leafbridge/note"
 	"github.com/emmaly/leafbridge/person"
 	"google.golang.org/api/option"
@@ -40,13 +41,28 @@ func main() {
 			Format:  person.WesternOrder,
 			// Format: person.EasternOrder,
 		},
+		Title: "Geological Engineer",
 	}
+
+	office := location.Location{
+		ID:         id.NewLocation(),
+		Name:       "Slate HQ",
+		Created:    createdTime,
+		CreatedBy:  creatorPersonID,
+		Modified:   createdTime,
+		ModifiedBy: creatorPersonID,
+	}
+	p.PrimaryLocation = office.ID
 
 	email := contact.Email{
 		ID:           id.NewContact(),
 		Type:         contact.TypeEmail,
 		Context:      contact.Work,
 		EmailAddress: "fred.flintstone@bedrock.quarry",
+		Created:      createdTime,
+		CreatedBy:    creatorPersonID,
+		Modified:     createdTime,
+		ModifiedBy:   creatorPersonID,
 	}
 	p.Contacts = append(p.Contacts, email.AsContact())
 
@@ -62,6 +78,10 @@ func main() {
 		Region:      "EB",
 		PostalCode:  "55443",
 		CountryCode: "US",
+		Created:     createdTime,
+		CreatedBy:   creatorPersonID,
+		Modified:    createdTime,
+		ModifiedBy:  creatorPersonID,
 	}
 	p.Contacts = append(p.Contacts, mail.AsContact())
 
@@ -71,46 +91,70 @@ func main() {
 		Context:     contact.Work,
 		Description: "Favorite Chat Server",
 		URL:         "https://chat.example.com/flanges",
+		Created:     createdTime,
+		CreatedBy:   creatorPersonID,
+		Modified:    createdTime,
+		ModifiedBy:  creatorPersonID,
 	}
 	p.Contacts = append(p.Contacts, chat.AsContact())
 
 	cell := contact.Phone{
-		ID:      id.NewContact(),
-		Type:    contact.TypeMobilePhone,
-		Context: contact.Work,
-		Number:  "+1 555-555-1212",
+		ID:         id.NewContact(),
+		Type:       contact.TypeMobilePhone,
+		Context:    contact.Work,
+		Number:     "+1 555-555-1212",
+		Created:    createdTime,
+		CreatedBy:  creatorPersonID,
+		Modified:   createdTime,
+		ModifiedBy: creatorPersonID,
 	}
 	p.Contacts = append(p.Contacts, cell.AsContact())
 
 	diaspora := contact.Username{
-		ID:       id.NewContact(),
-		Type:     contact.TypeDiaspora,
-		Context:  contact.Home,
-		Username: "fred.flintstone@bedrock.isp",
+		ID:         id.NewContact(),
+		Type:       contact.TypeDiaspora,
+		Context:    contact.Home,
+		Username:   "fred.flintstone@bedrock.isp",
+		Created:    createdTime,
+		CreatedBy:  creatorPersonID,
+		Modified:   createdTime,
+		ModifiedBy: creatorPersonID,
 	}
 	p.Contacts = append(p.Contacts, diaspora.AsContact())
 
 	github := contact.Username{
-		ID:       id.NewContact(),
-		Type:     contact.TypeGitHub,
-		Context:  contact.Work,
-		Username: "FredFlintstone",
+		ID:         id.NewContact(),
+		Type:       contact.TypeGitHub,
+		Context:    contact.Work,
+		Username:   "FredFlintstone",
+		Created:    createdTime,
+		CreatedBy:  creatorPersonID,
+		Modified:   createdTime,
+		ModifiedBy: creatorPersonID,
 	}
 	p.Contacts = append(p.Contacts, github.AsContact())
 
 	twitter := contact.Username{
-		ID:       id.NewContact(),
-		Type:     contact.TypeTwitter,
-		Context:  contact.Home,
-		Username: "FredFlintstone",
+		ID:         id.NewContact(),
+		Type:       contact.TypeTwitter,
+		Context:    contact.Home,
+		Username:   "FredFlintstone",
+		Created:    createdTime,
+		CreatedBy:  creatorPersonID,
+		Modified:   createdTime,
+		ModifiedBy: creatorPersonID,
 	}
 	p.Contacts = append(p.Contacts, twitter.AsContact())
 
 	facebook := contact.Username{
-		ID:       id.NewContact(),
-		Type:     contact.TypeFacebook,
-		Context:  contact.Home,
-		Username: "FredFlintstone",
+		ID:         id.NewContact(),
+		Type:       contact.TypeFacebook,
+		Context:    contact.Home,
+		Username:   "FredFlintstone",
+		Created:    createdTime,
+		CreatedBy:  creatorPersonID,
+		Modified:   createdTime,
+		ModifiedBy: creatorPersonID,
 	}
 	p.Contacts = append(p.Contacts, facebook.AsContact())
 
