@@ -5,17 +5,19 @@ import (
 
 	"cloud.google.com/go/firestore"
 	"github.com/emmaly/leafbridge"
+	"github.com/emmaly/leafbridge/contact"
 	"github.com/emmaly/leafbridge/id"
+	"github.com/emmaly/leafbridge/note"
 )
 
 // Person is a person
 type Person struct {
 	ID            id.Person
 	Name          Name
-	Contacts      []id.Contact `firestore:",omitempty"`
-	Notes         []id.Note    `firestore:",omitempty"`
-	Supervisor    id.Person    `firestore:",omitempty"`
-	DirectReports []id.Person  `firestore:",omitempty"`
+	Contacts      []contact.Contact `firestore:",omitempty"`
+	Notes         []note.Note       `firestore:",omitempty"`
+	Supervisor    id.Person         `firestore:",omitempty"`
+	DirectReports []id.Person       `firestore:",omitempty"`
 }
 
 // LoadPerson fetches a Person from the DB by ID

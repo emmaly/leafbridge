@@ -19,7 +19,7 @@ type Note struct {
 	CreatedBy  id.Person `firestore:",omitempty"`
 	Modified   time.Time `firestore:",omitempty"`
 	ModifiedBy id.Person `firestore:",omitempty"`
-	Notes      []id.Note `firestore:",omitempty"`
+	Notes      []Note    `firestore:",omitempty"`
 }
 
 // LoadNote fetches a Note from the DB by ID

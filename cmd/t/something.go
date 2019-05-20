@@ -7,6 +7,7 @@ import (
 	"time"
 
 	firebase "firebase.google.com/go"
+	"github.com/emmaly/leafbridge/contact"
 	"github.com/emmaly/leafbridge/id"
 	"github.com/emmaly/leafbridge/note"
 	"github.com/emmaly/leafbridge/person"
@@ -15,7 +16,7 @@ import (
 
 func main() {
 	ctx := context.Background()
-	app, err := firebase.NewApp(context.Background(), nil, option.WithCredentialsFile("creds.json"))
+	app, err := firebase.NewApp(ctx, nil, option.WithCredentialsFile("creds.json"))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -40,27 +41,19 @@ func main() {
 			// Format: person.EasternOrder,
 		},
 	}
-	err = p.Save(ctx, fs)
-	if err != nil {
-		log.Fatal(err)
-	}
 
-	email := person.EmailContact{
+	email := contact.Email{
 		ID:           id.NewContact(),
-		Type:         person.Email,
-		Context:      person.Work,
+		Type:         contact.TypeEmail,
+		Context:      contact.Work,
 		EmailAddress: "fred.flintstone@bedrock.quarry",
 	}
-	err = email.Contact().Save(ctx, fs)
-	if err != nil {
-		log.Fatal(err)
-	}
-	p.Contacts = append(p.Contacts, email.ID)
+	p.Contacts = append(p.Contacts, email.AsContact())
 
-	mail := person.LocationContact{
+	mail := contact.Location{
 		ID:      id.NewContact(),
-		Type:    person.PostalMail,
-		Context: person.Work,
+		Type:    contact.TypePostalMail,
+		Context: contact.Work,
 		Address: []string{
 			"Mail Stop 132",
 			"123 Main St",
@@ -70,84 +63,56 @@ func main() {
 		PostalCode:  "55443",
 		CountryCode: "US",
 	}
-	err = mail.Contact().Save(ctx, fs)
-	if err != nil {
-		log.Fatal(err)
-	}
-	p.Contacts = append(p.Contacts, mail.ID)
+	p.Contacts = append(p.Contacts, mail.AsContact())
 
-	chat := person.Contact{
+	chat := contact.Contact{
 		ID:          id.NewContact(),
-		Type:        person.Custom,
-		Context:     person.Work,
+		Type:        contact.TypeCustom,
+		Context:     contact.Work,
 		Description: "Favorite Chat Server",
 		URL:         "https://chat.example.com/flanges",
 	}
-	err = chat.Contact().Save(ctx, fs)
-	if err != nil {
-		log.Fatal(err)
-	}
-	p.Contacts = append(p.Contacts, chat.ID)
+	p.Contacts = append(p.Contacts, chat.AsContact())
 
-	cell := person.PhoneContact{
+	cell := contact.Phone{
 		ID:      id.NewContact(),
-		Type:    person.MobilePhone,
-		Context: person.Work,
+		Type:    contact.TypeMobilePhone,
+		Context: contact.Work,
 		Number:  "+1 555-555-1212",
 	}
-	err = cell.Contact().Save(ctx, fs)
-	if err != nil {
-		log.Fatal(err)
-	}
-	p.Contacts = append(p.Contacts, cell.ID)
+	p.Contacts = append(p.Contacts, cell.AsContact())
 
-	diaspora := person.UsernameContact{
+	diaspora := contact.Username{
 		ID:       id.NewContact(),
-		Type:     person.Diaspora,
-		Context:  person.Home,
+		Type:     contact.TypeDiaspora,
+		Context:  contact.Home,
 		Username: "fred.flintstone@bedrock.isp",
 	}
-	err = diaspora.Contact().Save(ctx, fs)
-	if err != nil {
-		log.Fatal(err)
-	}
-	p.Contacts = append(p.Contacts, diaspora.ID)
+	p.Contacts = append(p.Contacts, diaspora.AsContact())
 
-	github := person.UsernameContact{
+	github := contact.Username{
 		ID:       id.NewContact(),
-		Type:     person.GitHub,
-		Context:  person.Work,
+		Type:     contact.TypeGitHub,
+		Context:  contact.Work,
 		Username: "FredFlintstone",
 	}
-	err = github.Contact().Save(ctx, fs)
-	if err != nil {
-		log.Fatal(err)
-	}
-	p.Contacts = append(p.Contacts, github.ID)
+	p.Contacts = append(p.Contacts, github.AsContact())
 
-	twitter := person.UsernameContact{
+	twitter := contact.Username{
 		ID:       id.NewContact(),
-		Type:     person.Twitter,
-		Context:  person.Home,
+		Type:     contact.TypeTwitter,
+		Context:  contact.Home,
 		Username: "FredFlintstone",
 	}
-	err = twitter.Contact().Save(ctx, fs)
-	if err != nil {
-		log.Fatal(err)
-	}
-	p.Contacts = append(p.Contacts, twitter.ID)
+	p.Contacts = append(p.Contacts, twitter.AsContact())
 
-	facebook := person.UsernameContact{
+	facebook := contact.Username{
 		ID:       id.NewContact(),
-		Type:     person.Facebook,
-		Context:  person.Home,
+		Type:     contact.TypeFacebook,
+		Context:  contact.Home,
 		Username: "FredFlintstone",
 	}
-	err = facebook.Contact().Save(ctx, fs)
-	if err != nil {
-		log.Fatal(err)
-	}
-	p.Contacts = append(p.Contacts, facebook.ID)
+	p.Contacts = append(p.Contacts, facebook.AsContact())
 
 	musicNote := note.Note{
 		ID:         id.NewNote(),
@@ -158,11 +123,7 @@ func main() {
 		Modified:   createdTime,
 		ModifiedBy: creatorPersonID,
 	}
-	err = musicNote.Save(ctx, fs)
-	if err != nil {
-		log.Fatal(err)
-	}
-	p.Notes = append(p.Notes, musicNote.ID)
+	p.Notes = append(p.Notes, musicNote)
 
 	err = p.Save(ctx, fs)
 	if err != nil {
@@ -171,31 +132,26 @@ func main() {
 
 	fmt.Printf("\n%+v\n\n", p)
 
-	for _, id := range p.Contacts {
-		v, err := person.LoadContact(ctx, fs, id)
-		if err != nil {
-			fmt.Println(err)
-			continue
-		}
+	for _, v := range p.Contacts {
 		switch v.Type {
-		case person.Email:
-			fmt.Printf("\n%+v\n\n", v.EmailContact())
-		case person.PostalMail,
-			person.PhysicalLocation:
-			fmt.Printf("\n%+v\n\n", v.LocationContact())
-		case person.MobilePhone,
-			person.VoicePhone,
-			person.VoiceMessage,
-			person.Fax,
-			person.Pager:
-			fmt.Printf("\n%+v\n\n", v.PhoneContact())
-		case person.GitHub,
-			person.Twitter,
-			person.Tumblr,
-			person.Diaspora,
-			person.Mastodon,
-			person.Facebook:
-			fmt.Printf("\n%+v\n\t\t%s\n\n", v.UsernameContact(), v.UsernameContact().URL())
+		case contact.TypeEmail:
+			fmt.Printf("\n%+v\n\n", v.AsEmail())
+		case contact.TypePostalMail,
+			contact.TypePhysicalLocation:
+			fmt.Printf("\n%+v\n\n", v.AsLocation())
+		case contact.TypeMobilePhone,
+			contact.TypeVoicePhone,
+			contact.TypeVoiceMessage,
+			contact.TypeFax,
+			contact.TypePager:
+			fmt.Printf("\n%+v\n\n", v.AsPhone())
+		case contact.TypeGitHub,
+			contact.TypeTwitter,
+			contact.TypeTumblr,
+			contact.TypeDiaspora,
+			contact.TypeMastodon,
+			contact.TypeFacebook:
+			fmt.Printf("\n%+v\n\t\t%s\n\n", v.AsUsername(), v.AsUsername().URL())
 		default:
 			fmt.Printf("\nDon't know how to show the contact type called %s.\n\n", v.Type)
 		}
