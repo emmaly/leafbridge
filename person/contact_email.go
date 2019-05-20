@@ -7,10 +7,10 @@ import (
 // EmailContact is an email type of Contact
 type EmailContact struct {
 	ID           id.Contact
-	Type         ContactType
-	Context      ContactContext
-	Notes        []id.Note
-	EmailAddress string
+	Type         ContactType    `firestore:",omitempty"`
+	Context      ContactContext `firestore:",omitempty"`
+	Notes        []id.Note      `firestore:",omitempty"`
+	EmailAddress string         `firestore:",omitempty"`
 }
 
 // EmailContact converts a Contact to an EmailContact

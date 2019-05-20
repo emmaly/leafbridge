@@ -8,13 +8,13 @@ import (
 
 // Name is a Person's name
 type Name struct {
-	Family  string
-	Middle  string
-	Given   string
-	Ordinal string
-	Prefix  string
-	Suffix  string
-	Format  NameFormat
+	Family  string     `firestore:",omitempty"`
+	Middle  string     `firestore:",omitempty"`
+	Given   string     `firestore:",omitempty"`
+	Ordinal string     `firestore:",omitempty"`
+	Prefix  string     `firestore:",omitempty"`
+	Suffix  string     `firestore:",omitempty"`
+	Format  NameFormat `firestore:",omitempty"`
 }
 
 // NameFormat is a Person's preferred name order/format

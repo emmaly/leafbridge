@@ -7,10 +7,10 @@ import (
 // UsernameContact is a username type of Contact
 type UsernameContact struct {
 	ID       id.Contact
-	Type     ContactType
-	Context  ContactContext
-	Notes    []id.Note
-	Username string
+	Type     ContactType    `firestore:",omitempty"`
+	Context  ContactContext `firestore:",omitempty"`
+	Notes    []id.Note      `firestore:",omitempty"`
+	Username string         `firestore:",omitempty"`
 }
 
 // UsernameContact converts a Contact to an UsernameContact

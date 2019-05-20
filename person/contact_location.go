@@ -7,14 +7,14 @@ import (
 // LocationContact is an email type of Contact
 type LocationContact struct {
 	ID          id.Contact
-	Type        ContactType
-	Context     ContactContext
-	Notes       []id.Note
-	Address     []string
-	City        string
-	Region      string
-	PostalCode  string
-	CountryCode string
+	Type        ContactType    `firestore:",omitempty"`
+	Context     ContactContext `firestore:",omitempty"`
+	Notes       []id.Note      `firestore:",omitempty"`
+	Address     []string       `firestore:",omitempty"`
+	City        string         `firestore:",omitempty"`
+	Region      string         `firestore:",omitempty"`
+	PostalCode  string         `firestore:",omitempty"`
+	CountryCode string         `firestore:",omitempty"`
 }
 
 // LocationContact converts a Contact to an LocationContact
