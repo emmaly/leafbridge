@@ -1,12 +1,15 @@
 package person
 
-import "github.com/emmaly/leafbridge/note"
+import (
+	"github.com/emmaly/leafbridge/id"
+)
 
 // EmailContact is an email type of Contact
 type EmailContact struct {
+	ID           id.Contact
 	Type         ContactType
 	Context      ContactContext
-	Notes        []note.Note
+	Notes        []id.Note
 	EmailAddress string
 }
 
@@ -16,6 +19,7 @@ func (c Contact) EmailContact() EmailContact {
 		return EmailContact{}
 	}
 	ec := EmailContact{
+		ID:           c.ID,
 		Type:         c.Type,
 		Context:      c.Context,
 		Notes:        c.Notes,
@@ -27,6 +31,7 @@ func (c Contact) EmailContact() EmailContact {
 // Contact converts an EmailContact into a Contact
 func (ec EmailContact) Contact() Contact {
 	c := Contact{
+		ID:           ec.ID,
 		Type:         ec.Type,
 		Context:      ec.Context,
 		Notes:        ec.Notes,

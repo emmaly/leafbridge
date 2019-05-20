@@ -1,12 +1,15 @@
 package person
 
-import "github.com/emmaly/leafbridge/note"
+import (
+	"github.com/emmaly/leafbridge/id"
+)
 
 // UsernameContact is a username type of Contact
 type UsernameContact struct {
+	ID       id.Contact
 	Type     ContactType
 	Context  ContactContext
-	Notes    []note.Note
+	Notes    []id.Note
 	Username string
 }
 
@@ -16,6 +19,7 @@ func (c Contact) UsernameContact() UsernameContact {
 		return UsernameContact{}
 	}
 	dc := UsernameContact{
+		ID:       c.ID,
 		Type:     c.Type,
 		Context:  c.Context,
 		Notes:    c.Notes,
@@ -27,6 +31,7 @@ func (c Contact) UsernameContact() UsernameContact {
 // Contact converts an UsernameContact into a Contact
 func (dc UsernameContact) Contact() Contact {
 	c := Contact{
+		ID:       dc.ID,
 		Type:     dc.Type,
 		Context:  dc.Context,
 		Notes:    dc.Notes,

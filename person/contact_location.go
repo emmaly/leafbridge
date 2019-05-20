@@ -1,12 +1,15 @@
 package person
 
-import "github.com/emmaly/leafbridge/note"
+import (
+	"github.com/emmaly/leafbridge/id"
+)
 
 // LocationContact is an email type of Contact
 type LocationContact struct {
+	ID          id.Contact
 	Type        ContactType
 	Context     ContactContext
-	Notes       []note.Note
+	Notes       []id.Note
 	Address     []string
 	City        string
 	Region      string
@@ -20,6 +23,7 @@ func (c Contact) LocationContact() LocationContact {
 		return LocationContact{}
 	}
 	ec := LocationContact{
+		ID:          c.ID,
 		Type:        c.Type,
 		Context:     c.Context,
 		Notes:       c.Notes,
@@ -35,6 +39,7 @@ func (c Contact) LocationContact() LocationContact {
 // Contact converts an LocationContact into a Contact
 func (ec LocationContact) Contact() Contact {
 	c := Contact{
+		ID:          ec.ID,
 		Type:        ec.Type,
 		Context:     ec.Context,
 		Notes:       ec.Notes,
