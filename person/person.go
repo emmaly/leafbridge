@@ -25,6 +25,7 @@ type Person struct {
 	Supervisor      id.Person         `firestore:",omitempty"`
 	DirectReports   []id.Person       `firestore:",omitempty"`
 	PrimaryLocation id.Location       `firestore:",omitempty"`
+	PresenceStatus  presense.Status   `firestore:",omitempty"`
 }
 
 // LoadPerson fetches a Person from the DB by ID
