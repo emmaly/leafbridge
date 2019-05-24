@@ -3,16 +3,15 @@ package computer
 import (
 	"time"
 
+	"github.com/emmaly/leafbridge"
 	"github.com/emmaly/leafbridge/id"
-	"github.com/emmaly/leafbridge/note"
 )
 
 // Computer is a computer
 type Computer struct {
+	leafbridge.Common
 	ID          id.Computer
-	Name        string      `firestore:",omitempty"`
-	PrimaryUser id.Person   `firestore:",omitempty"`
-	Created     time.Time   `firestore:",omitempty"`
-	LastSeen    time.Time   `firestore:",omitempty"`
-	Notes       []note.Note `firestore:",omitempty"`
+	Name        string    `firestore:",omitempty"`
+	PrimaryUser id.Person `firestore:",omitempty"`
+	LastSeen    time.Time `firestore:",omitempty"`
 }

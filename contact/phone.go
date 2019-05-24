@@ -1,23 +1,17 @@
 package contact
 
 import (
-	"time"
-
+	"github.com/emmaly/leafbridge"
 	"github.com/emmaly/leafbridge/id"
-	"github.com/emmaly/leafbridge/note"
 )
 
 // Phone is an email type of Contact
 type Phone struct {
-	ID         id.Contact
-	Type       Type        `firestore:",omitempty"`
-	Context    Context     `firestore:",omitempty"`
-	Created    time.Time   `firestore:",omitempty"`
-	CreatedBy  id.Person   `firestore:",omitempty"`
-	Modified   time.Time   `firestore:",omitempty"`
-	ModifiedBy id.Person   `firestore:",omitempty"`
-	Notes      []note.Note `firestore:",omitempty"`
-	Number     string      `firestore:",omitempty"`
+	leafbridge.Common
+	ID      id.Contact
+	Type    Type    `firestore:",omitempty"`
+	Context Context `firestore:",omitempty"`
+	Number  string  `firestore:",omitempty"`
 }
 
 // AsPhone converts a Contact to an Phone
@@ -29,8 +23,10 @@ func (c Contact) AsPhone() Phone {
 		ID:      c.ID,
 		Type:    c.Type,
 		Context: c.Context,
-		Notes:   c.Notes,
 		Number:  c.Number,
+		Common: leafbridge.Common{
+			Notes: c.Notes,
+		},
 	}
 	return x
 }
@@ -41,8 +37,10 @@ func (x Phone) AsContact() Contact {
 		ID:      x.ID,
 		Type:    x.Type,
 		Context: x.Context,
-		Notes:   x.Notes,
 		Number:  x.Number,
+		Common: leafbridge.Common{
+			Notes: x.Notes,
+		},
 	}
 	return c
 }

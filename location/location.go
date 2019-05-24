@@ -2,25 +2,19 @@ package location
 
 import (
 	"context"
-	"time"
 
 	"cloud.google.com/go/firestore"
 	"github.com/emmaly/leafbridge"
 	"github.com/emmaly/leafbridge/id"
-	"github.com/emmaly/leafbridge/note"
 )
 
 // Location is a note
 type Location struct {
+	leafbridge.Common
 	ID          id.Location
-	Type        Type        `firestore:",omitempty"`
-	Name        string      `firestore:",omitempty"`
-	Description string      `firestore:",omitempty"`
-	Created     time.Time   `firestore:",omitempty"`
-	CreatedBy   id.Person   `firestore:",omitempty"`
-	Modified    time.Time   `firestore:",omitempty"`
-	ModifiedBy  id.Person   `firestore:",omitempty"`
-	Notes       []note.Note `firestore:",omitempty"`
+	Type        Type   `firestore:",omitempty"`
+	Name        string `firestore:",omitempty"`
+	Description string `firestore:",omitempty"`
 }
 
 // LoadLocation fetches a Location from the DB by ID

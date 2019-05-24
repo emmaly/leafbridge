@@ -1,23 +1,17 @@
 package contact
 
 import (
-	"time"
-
+	"github.com/emmaly/leafbridge"
 	"github.com/emmaly/leafbridge/id"
-	"github.com/emmaly/leafbridge/note"
 )
 
 // Username is a username type of Contact
 type Username struct {
-	ID         id.Contact
-	Type       Type        `firestore:",omitempty"`
-	Context    Context     `firestore:",omitempty"`
-	Created    time.Time   `firestore:",omitempty"`
-	CreatedBy  id.Person   `firestore:",omitempty"`
-	Modified   time.Time   `firestore:",omitempty"`
-	ModifiedBy id.Person   `firestore:",omitempty"`
-	Notes      []note.Note `firestore:",omitempty"`
-	Username   string      `firestore:",omitempty"`
+	leafbridge.Common
+	ID       id.Contact
+	Type     Type    `firestore:",omitempty"`
+	Context  Context `firestore:",omitempty"`
+	Username string  `firestore:",omitempty"`
 }
 
 // AsUsername converts a Contact to an Username
@@ -29,8 +23,10 @@ func (c Contact) AsUsername() Username {
 		ID:       c.ID,
 		Type:     c.Type,
 		Context:  c.Context,
-		Notes:    c.Notes,
 		Username: c.Username,
+		Common: leafbridge.Common{
+			Notes: c.Notes,
+		},
 	}
 	return x
 }
@@ -41,8 +37,10 @@ func (x Username) AsContact() Contact {
 		ID:       x.ID,
 		Type:     x.Type,
 		Context:  x.Context,
-		Notes:    x.Notes,
 		Username: x.Username,
+		Common: leafbridge.Common{
+			Notes: x.Notes,
+		},
 	}
 	return c
 }
