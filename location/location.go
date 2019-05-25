@@ -2,6 +2,7 @@ package location
 
 import (
 	"context"
+	"time"
 
 	"cloud.google.com/go/firestore"
 	"github.com/emmaly/leafbridge"
@@ -15,6 +16,15 @@ type Location struct {
 	Type        Type   `firestore:",omitempty"`
 	Name        string `firestore:",omitempty"`
 	Description string `firestore:",omitempty"`
+}
+
+// NewLocation returns a new and initialized Location
+func NewLocation() Location {
+	var l Location
+	l.ID = id.NewLocation()
+	l.Created = time.Now()
+	l.Modified = l.Created
+	return l
 }
 
 // LoadLocation fetches a Location from the DB by ID

@@ -1,46 +1,52 @@
 package contact
 
-import (
-	"github.com/emmaly/leafbridge"
-	"github.com/emmaly/leafbridge/id"
-)
-
-// Phone is an email type of Contact
+// Phone is an pmail type of Contact
 type Phone struct {
-	leafbridge.Common
-	ID      id.Contact
-	Type    Type    `firestore:",omitempty"`
-	Context Context `firestore:",omitempty"`
-	Number  string  `firestore:",omitempty"`
+	Common
+	Number string `firestore:",omitempty"`
 }
 
-// AsPhone converts a Contact to an Phone
-func (c Contact) AsPhone() Phone {
-	if c.Type != TypeMobilePhone && c.Type != TypeVoicePhone && c.Type != TypeVoiceMessage && c.Type != TypeFax && c.Type != TypePager {
-		return Phone{}
-	}
-	x := Phone{
-		ID:      c.ID,
-		Type:    c.Type,
-		Context: c.Context,
-		Number:  c.Number,
-		Common: leafbridge.Common{
-			Notes: c.Notes,
-		},
-	}
-	return x
+// Type returns the type of contact
+func (p Phone) Type() Type {
+	return p.Common.Type
 }
 
-// AsContact converts an Phone into a Contact
-func (x Phone) AsContact() Contact {
-	c := Contact{
-		ID:      x.ID,
-		Type:    x.Type,
-		Context: x.Context,
-		Number:  x.Number,
-		Common: leafbridge.Common{
-			Notes: x.Notes,
-		},
-	}
-	return c
+// NewVoicePhone returns a new and initialized Phone contact type
+func NewVoicePhone() Phone {
+	var p Phone
+	p.Common.New()
+	p.Common.Type = TypeVoicePhone
+	return p
+}
+
+// NewMobilePhone returns a new and initialized Phone contact type
+func NewMobilePhone() Phone {
+	var p Phone
+	p.Common.New()
+	p.Common.Type = TypeMobilePhone
+	return p
+}
+
+// NewVoiceMessage returns a new and initialized Phone contact type
+func NewVoiceMessage() Phone {
+	var p Phone
+	p.Common.New()
+	p.Common.Type = TypeVoiceMessage
+	return p
+}
+
+// NewFax returns a new and initialized Phone contact type
+func NewFax() Phone {
+	var p Phone
+	p.Common.New()
+	p.Common.Type = TypeFax
+	return p
+}
+
+// NewPager returns a new and initialized Phone contact type
+func NewPager() Phone {
+	var p Phone
+	p.Common.New()
+	p.Common.Type = TypePager
+	return p
 }

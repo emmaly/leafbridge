@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"time"
 
 	firebase "firebase.google.com/go"
 	"github.com/emmaly/leafbridge"
@@ -27,9 +26,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	createdTime := time.Now()
-	creatorPersonID := id.NewPerson()
-
 	pID := id.NewPerson()
 	p := person.Person{
 		ID: pID,
@@ -46,180 +42,93 @@ func main() {
 		PresenceStatus: presence.Status{},
 	}
 
-	office := location.Location{
-		ID:   id.NewLocation(),
-		Name: "Slate HQ",
-		Common: leafbridge.Common{
-			Created:    createdTime,
-			CreatedBy:  creatorPersonID,
-			Modified:   createdTime,
-			ModifiedBy: creatorPersonID,
-		},
-	}
+	office := location.NewLocation()
+	office.Name = "Slate HQ"
 	p.PrimaryLocation = office.ID
 
-	email := contact.Email{
-		ID:           id.NewContact(),
-		Type:         contact.TypeEmail,
-		Context:      contact.Work,
-		EmailAddress: "fred.flintstone@bedrock.quarry",
-		Common: leafbridge.Common{
-			Created:    createdTime,
-			CreatedBy:  creatorPersonID,
-			Modified:   createdTime,
-			ModifiedBy: creatorPersonID,
-		},
-	}
-	p.Contacts = append(p.Contacts, email.AsContact())
+	email := contact.NewEmail()
+	email.Context = contact.Work
+	email.EmailAddress = "fred.flintstone@bedrock.quarry"
+	p.Contacts = append(p.Contacts, email)
 
-	mail := contact.Location{
-		ID:      id.NewContact(),
-		Type:    contact.TypePostalMail,
-		Context: contact.Work,
-		Address: []string{
-			"Mail Stop 132",
-			"123 Main St",
-		},
-		City:        "Onett",
-		Region:      "EB",
-		PostalCode:  "55443",
-		CountryCode: "US",
-		Common: leafbridge.Common{
-			Created:    createdTime,
-			CreatedBy:  creatorPersonID,
-			Modified:   createdTime,
-			ModifiedBy: creatorPersonID,
-		},
+	mail := contact.NewPostalMail()
+	mail.Context = contact.Work
+	mail.Address = []string{
+		"Mail Stop 132",
+		"123 Main St",
 	}
-	p.Contacts = append(p.Contacts, mail.AsContact())
+	mail.City = "Onett"
+	mail.Region = "EB"
+	mail.PostalCode = "55443"
+	mail.CountryCode = "US"
+	p.Contacts = append(p.Contacts, mail)
 
-	chat := contact.Contact{
-		ID:          id.NewContact(),
-		Type:        contact.TypeCustom,
-		Context:     contact.Work,
-		Description: "Favorite Chat Server",
-		URL:         "https://chat.example.com/flanges",
-		Common: leafbridge.Common{
-			Created:    createdTime,
-			CreatedBy:  creatorPersonID,
-			Modified:   createdTime,
-			ModifiedBy: creatorPersonID,
-		},
-	}
-	p.Contacts = append(p.Contacts, chat.AsContact())
+	// chat := contact.Contact{
+	// 	ID:          id.NewContact(),
+	// 	Type:        contact.TypeCustom,
+	// 	Context:     contact.Work,
+	// 	Description: "Favorite Chat Server",
+	// 	URL:         "https://chat.example.com/flanges",
+	// 	Common: leafbridge.Common{
+	// 		Created:    createdTime,
+	// 		CreatedBy:  creatorPersonID,
+	// 		Modified:   createdTime,
+	// 		ModifiedBy: creatorPersonID,
+	// 	},
+	// }
+	// p.Contacts = append(p.Contacts, chat.AsContact())
 
-	cell := contact.Phone{
-		ID:      id.NewContact(),
-		Type:    contact.TypeMobilePhone,
-		Context: contact.Work,
-		Number:  "+1 555-555-1212",
-		Common: leafbridge.Common{
-			Created:    createdTime,
-			CreatedBy:  creatorPersonID,
-			Modified:   createdTime,
-			ModifiedBy: creatorPersonID,
-		},
-	}
-	p.Contacts = append(p.Contacts, cell.AsContact())
+	cell := contact.NewMobilePhone()
+	cell.Context = contact.Work
+	cell.Number = "+1 555-555-1212"
+	p.Contacts = append(p.Contacts, cell)
 
-	diaspora := contact.Username{
-		ID:       id.NewContact(),
-		Type:     contact.TypeDiaspora,
-		Context:  contact.Home,
-		Username: "fred.flintstone@bedrock.isp",
-		Common: leafbridge.Common{
-			Created:    createdTime,
-			CreatedBy:  creatorPersonID,
-			Modified:   createdTime,
-			ModifiedBy: creatorPersonID,
-		},
-	}
-	p.Contacts = append(p.Contacts, diaspora.AsContact())
+	diaspora := contact.NewDiaspora()
+	diaspora.Context = contact.Home
+	diaspora.Username = "fred.flintstone@bedrock.isp"
+	p.Contacts = append(p.Contacts, diaspora)
 
-	github := contact.Username{
-		ID:       id.NewContact(),
-		Type:     contact.TypeGitHub,
-		Context:  contact.Work,
-		Username: "FredFlintstone",
-		Common: leafbridge.Common{
-			Created:    createdTime,
-			CreatedBy:  creatorPersonID,
-			Modified:   createdTime,
-			ModifiedBy: creatorPersonID,
-		},
-	}
-	p.Contacts = append(p.Contacts, github.AsContact())
+	github := contact.NewGitHub()
+	github.Context = contact.Work
+	github.Username = "FredFlintstone"
+	p.Contacts = append(p.Contacts, github)
 
-	twitter := contact.Username{
-		ID:       id.NewContact(),
-		Type:     contact.TypeTwitter,
-		Context:  contact.Home,
-		Username: "FredFlintstone",
-		Common: leafbridge.Common{
-			Created:    createdTime,
-			CreatedBy:  creatorPersonID,
-			Modified:   createdTime,
-			ModifiedBy: creatorPersonID,
-		},
-	}
-	p.Contacts = append(p.Contacts, twitter.AsContact())
+	twitter := contact.NewTwitter()
+	twitter.Context = contact.Home
+	twitter.Username = "FredFlintstone"
+	p.Contacts = append(p.Contacts, twitter)
 
-	facebook := contact.Username{
-		ID:       id.NewContact(),
-		Type:     contact.TypeFacebook,
-		Context:  contact.Home,
-		Username: "FredFlintstone",
-		Common: leafbridge.Common{
-			Created:    createdTime,
-			CreatedBy:  creatorPersonID,
-			Modified:   createdTime,
-			ModifiedBy: creatorPersonID,
-		},
-	}
-	p.Contacts = append(p.Contacts, facebook.AsContact())
+	facebook := contact.NewFacebook()
+	facebook.Context = contact.Home
+	facebook.Username = "FredFlintstone"
+	p.Contacts = append(p.Contacts, facebook)
 
-	musicNote := leafbridge.Note{
-		ID:    id.NewNote(),
-		Title: "Likes Rock and Roll",
-		Body:  "Seems to like music that gets his stone wheels spinning.",
-		Common: leafbridge.Common{
-			Created:    createdTime,
-			CreatedBy:  creatorPersonID,
-			Modified:   createdTime,
-			ModifiedBy: creatorPersonID,
-		},
-	}
+	musicNote := leafbridge.NewNote()
+	musicNote.Title = "Likes Rock and Roll"
+	musicNote.Body = "Seems to like music that gets his stone wheels spinning."
 	p.Notes = append(p.Notes, musicNote)
 
-	err = p.Save(ctx, fs)
-	if err != nil {
-		log.Fatal(err)
+	if false {
+		err = p.Save(ctx, fs)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 
 	fmt.Printf("\n%+v\n\n", p)
 
 	for _, v := range p.Contacts {
-		switch v.Type {
-		case contact.TypeEmail:
-			fmt.Printf("\n%+v\n\n", v.AsEmail())
-		case contact.TypePostalMail,
-			contact.TypePhysicalLocation:
-			fmt.Printf("\n%+v\n\n", v.AsLocation())
-		case contact.TypeMobilePhone,
-			contact.TypeVoicePhone,
-			contact.TypeVoiceMessage,
-			contact.TypeFax,
-			contact.TypePager:
-			fmt.Printf("\n%+v\n\n", v.AsPhone())
-		case contact.TypeGitHub,
-			contact.TypeTwitter,
-			contact.TypeTumblr,
-			contact.TypeDiaspora,
-			contact.TypeMastodon,
-			contact.TypeFacebook:
-			fmt.Printf("\n%+v\n\t\t%s\n\n", v.AsUsername(), v.AsUsername().URL())
+		switch c := v.(type) {
+		case contact.Email:
+			fmt.Printf("\nEmail Type:\n%+v\n\n", c)
+		case contact.Location:
+			fmt.Printf("\nLocation Type:\n%+v\n\n", c)
+		case contact.Phone:
+			fmt.Printf("\nPhone Type:\n%+v\n\n", c)
+		case contact.Username:
+			fmt.Printf("\nUsername Type:\n%+v\n\t\t%s\n\n", c, c.URL())
 		default:
-			fmt.Printf("\nDon't know how to show the contact type called %s.\n\n", v.Type)
+			fmt.Printf("\nUnknown Type:\n%+v\n\n", c)
 		}
 	}
 }
