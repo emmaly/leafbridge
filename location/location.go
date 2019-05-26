@@ -18,8 +18,8 @@ type Location struct {
 	Description string `firestore:",omitempty"`
 }
 
-// NewLocation returns a new and initialized Location
-func NewLocation() Location {
+// New returns a new and initialized Location
+func New() Location {
 	var l Location
 	l.ID = id.NewLocation()
 	l.Created = time.Now()

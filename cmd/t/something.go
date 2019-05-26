@@ -8,7 +8,6 @@ import (
 	firebase "firebase.google.com/go"
 	"github.com/emmaly/leafbridge"
 	"github.com/emmaly/leafbridge/contact"
-	"github.com/emmaly/leafbridge/id"
 	"github.com/emmaly/leafbridge/location"
 	"github.com/emmaly/leafbridge/person"
 	"github.com/emmaly/leafbridge/presence"
@@ -26,23 +25,20 @@ func main() {
 		log.Fatal(err)
 	}
 
-	pID := id.NewPerson()
-	p := person.Person{
-		ID: pID,
-		Name: person.Name{
-			Prefix:  "Mr.",
-			Family:  "Flintstone",
-			Given:   "Frederick",
-			Ordinal: "III",
-			Suffix:  "PE",
-			Format:  person.WesternOrder,
-			// Format: person.EasternOrder,
-		},
-		Title:          "Geological Engineer",
-		PresenceStatus: presence.Status{},
+	p := person.New()
+	p.Name = person.Name{
+		Prefix:  "Mr.",
+		Family:  "Flintstone",
+		Given:   "Frederick",
+		Ordinal: "III",
+		Suffix:  "PE",
+		Format:  person.WesternOrder,
+		// Format: person.EasternOrder,
 	}
+	p.Title = "Geological Engineer"
+	p.PresenceStatus = presence.Status{}
 
-	office := location.NewLocation()
+	office := location.New()
 	office.Name = "Slate HQ"
 	p.PrimaryLocation = office.ID
 
@@ -108,7 +104,7 @@ func main() {
 	musicNote.Body = "Seems to like music that gets his stone wheels spinning."
 	p.Notes = append(p.Notes, musicNote)
 
-	if false {
+	if true {
 		err = p.Save(ctx, fs)
 		if err != nil {
 			log.Fatal(err)

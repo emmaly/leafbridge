@@ -2,6 +2,7 @@ package person
 
 import (
 	"context"
+	"time"
 
 	"cloud.google.com/go/firestore"
 	"github.com/emmaly/leafbridge"
@@ -21,6 +22,15 @@ type Person struct {
 	DirectReports   []id.Person       `firestore:",omitempty"`
 	PrimaryLocation id.Location       `firestore:",omitempty"`
 	PresenceStatus  presence.Status   `firestore:",omitempty"`
+}
+
+// New returns a new and initialized Person
+func New() Person {
+	var p Person
+	p.ID = id.NewPerson()
+	p.Created = time.Now()
+	p.Modified = p.Created
+	return p
 }
 
 // LoadPerson fetches a Person from the DB by ID
