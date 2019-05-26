@@ -104,7 +104,12 @@ func main() {
 	musicNote.Body = "Seems to like music that gets his stone wheels spinning."
 	p.Notes = append(p.Notes, musicNote)
 
-	if true {
+	p.PresenceStatus = presence.Status{
+		Availability: presence.Available,
+		Text:         "Watching Paint Dry",
+	}
+
+	if false {
 		err = p.Save(ctx, fs)
 		if err != nil {
 			log.Fatal(err)
